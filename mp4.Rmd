@@ -21,9 +21,9 @@ knitr::opts_chunk$set(connection = db, max.print = 20)
 
 ```{sql connection = db}
 #SQL Query to Join the Tables
-SELECT duration, start_time, stop_time, start_station_id, end_station_id
+SELECT *
 FROM trips 
-LEFT JOIN station_months ON trips.start_station_id = station_months.name
+LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
 WHERE start_time > "2017-01-01 06:00:00" AND stop_time < "2017-01-01 10:00:00"
 ORDER BY start_time;
 ```
@@ -32,10 +32,11 @@ ORDER BY start_time;
 trips <- dbGetQuery(db, 
                     'SELECT *
                     FROM trips 
-                    LEFT JOIN station_months ON trips.start_station_id = station_months.name
+                    LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
                     WHERE start_time > "2017-01-01 06:00:00" AND stop_time < "2017-01-01 10:00:00"
                     ORDER BY start_time;')
 ggplot(data = trips, aes(x = start_station_id, y = duration)) + 
   geom_point(aes(color = end_station_id)) + 
   geom_smooth()
 ```
+
