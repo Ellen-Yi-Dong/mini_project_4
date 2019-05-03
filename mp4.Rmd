@@ -8,7 +8,7 @@ output:
 ---
 knitr::opts_chunk$set(echo = TRUE)
 #Opening the libraries, getting scidb data
-```{r}
+```{r, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(RMySQL)
 db <- dbConnect(MySQL(), 
