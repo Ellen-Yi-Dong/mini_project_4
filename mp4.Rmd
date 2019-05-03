@@ -19,6 +19,11 @@ db <- dbConnect(MySQL(),
 knitr::opts_chunk$set(connection = db, max.print = 20)
 ```
 
+```{r}
+library(leaflet)
+library(sf)
+```
+
 ```{sql connection = db}
 #SQL Query to Join the Tables
 SELECT station_id, name, avg_lat, avg_lon
@@ -50,8 +55,10 @@ trips <- dbGetQuery(db,
 ```
 
 ```{r}
-ggplot(data = trips, aes(x = start_station_id, y = duration)) + 
-  geom_point(aes(color = end_station_id)) + 
-  geom_smooth()
+trips_plot <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(data = trips, lng = ~avg_lon, lat = ~avg_lat)
+
+trips_plot
 ```
 
