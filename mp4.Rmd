@@ -36,14 +36,16 @@ ORDER BY start_time;
 
 ```{sql connection = db}
 #SQL Query to Join the Tables
-SELECT COUNT(bike_id) AS number_of_bikes
+SELECT COUNT(DISTINCT bike_id) AS number_of_bikes
 FROM trips 
 ```
 
 ```{sql connection = db}
 #SQL Query to Join the Tables
-SELECT COUNT(user_type) AS number_of_bikes
+SELECT COUNT(user_type) AS number_of_users
 FROM trips 
+WHERE user_type = 'subscriber'
+GROUP BY bike_id
 ```
 
 ```{r}
