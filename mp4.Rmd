@@ -41,7 +41,7 @@ FROM trips
 
 ```{sql connection = db}
 #SQL Query to Join the Tables
-#users that are youg
+#users that are young
 SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
 WHERE user_type = 'subscriber'
@@ -62,6 +62,19 @@ ORDER BY birth_year DESC
 
 
 ```
+
+```{r}
+after1980 <- dbGetQuery(db,
+                        'SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_after1980
+FROM trips 
+WHERE user_type = "subscriber" AND birth_year >= 1980
+GROUP BY birth_year;')
+```
+
+```{r}
+
+```
+
 
 ```{r}
 trips <- dbGetQuery(db, 
