@@ -89,21 +89,31 @@ ORDER BY birth_year;')
 ```
 
 ```{sql connection=db}
-SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
+SELECT user_type, birth_year, COUNT(user_type) AS total_of_users_by_age
 FROM trips 
 WHERE user_type = "subscriber"
-GROUP BY birth_year
-ORDER BY birth_year
+GROUP BY user_type
+ORDER BY birth_year;
+```
+
+```{r}
+gender <- dbGetQuery(db, 
+                     "SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
+                      FROM trips 
+                      WHERE user_type = 'subscriber'
+                      GROUP BY birth_year 
+                      ORDER BY birth_year;")
+View(gender)
 ```
 
 
 ```{r}
-plot1 <- ggplot(plot1df, aes(x = birth_year, y = total_of_users_by_age)) + geom_col()
-```
+plot1 <- ggplot(plot1df, aes(x = birth_year, y = total_of_users_by_age, fill = gender)) + 
+  geom_col()
 
-```{r}
 plot1
 ```
+
 
 ```{r}
 trips <- dbGetQuery(db, 
