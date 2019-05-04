@@ -25,6 +25,7 @@ knitr::opts_chunk$set(connection = db, max.print = 20)
 
 ```{sql connection = db}
 #SQL Query to Join the Tables
+
 SELECT station_id, name, avg_lat, avg_lon
 FROM trips 
 LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
@@ -34,14 +35,15 @@ ORDER BY start_time;
 ```
 
 ```{sql connection = db}
-#SQL Query to Join the Tables
+#SQL Query to Count Unique Bikes
+
 SELECT COUNT(DISTINCT bike_id) AS number_of_bikes
 FROM trips 
 ```
 
 ```{sql connection = db}
-#SQL Query to Join the Tables
-#users that are young
+#SQL Query to find number of users that are young
+
 SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
 WHERE user_type = 'subscriber'
@@ -51,7 +53,7 @@ ORDER BY birth_year DESC
 ```
 
 ```{sql, connection = db}
-#users that are old
+#SQL Query to find number of users that are old
 
 SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
@@ -72,11 +74,6 @@ GROUP BY birth_year;')
 ```
 
 ```{r}
-
-```
-
-
-```{r}
 trips <- dbGetQuery(db, 
                     'SELECT station_id, name, avg_lat, avg_lon
                      FROM trips 
@@ -84,7 +81,17 @@ trips <- dbGetQuery(db,
                      WHERE start_time > "2017-01-01 06:00:00" AND stop_time < "2017-01-01 10:00:00"
                      GROUP BY station_id
                     ORDER BY start_time;')
+```
 
+```{r}
+trips_plot <- leaflet() %>%
+  addTiles() %>%
+  addCircleMarkers(data = trips, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
+
+trips_plot
+```     
+
+```{r}
 young_users <- dbGetQuery(db, 
                     "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
@@ -93,7 +100,13 @@ AND birth_year > 1980
 GROUP BY birth_year
 ORDER BY birth_year DESC
 ")
+```
 
+```{r}
+young_users_plot <- ggplot(young_users, aes(x = birth_year, y = number_of_users))
+```
+
+```{r}
 old_users <- dbGetQuery(db,
                      "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
                       FROM trips 
@@ -104,12 +117,6 @@ old_users <- dbGetQuery(db,
                           )
 ```
 
-```{r}
-trips_plot <- leaflet() %>%
-  addTiles() %>%
-  addCircleMarkers(data = trips, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
 
-trips_plot
-```     
 
 Insert text here
