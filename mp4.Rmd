@@ -52,45 +52,9 @@ GROUP BY birth_year
 ORDER BY birth_year DESC
 ```
 
-```{sql connection = db}
-#SQL Query to find number of users that are old
-
-SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
-FROM trips 
-WHERE user_type = 'subscriber'AND birth_year BETWEEN 1974 and 1980
-GROUP BY birth_year
-ORDER BY birth_year DESC
 
 
-```
 
-```{r}
-after1980 <- dbGetQuery(db,
-                        'SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_after1980
-FROM trips 
-WHERE user_type = "subscriber" AND birth_year >= 1980
-GROUP BY birth_year;')
-```
-
-```{r}
-
-
-plot1 <- ggplot(after1980, aes(x = birth_year, y = total_of_users_after1980)) + geom_col()
-```
-
-```{r}
-plot1
-```
-
-```{r}
-plot1df <- dbGetQuery(db,
-                        'SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
-FROM trips 
-WHERE user_type = "subscriber" AND birth_year > 1974
-WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
-GROUP BY birth_year
-ORDER BY birth_year;')
-```
 
 ```{sql connection=db}
 SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age, bike_id
@@ -99,24 +63,7 @@ WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
 GROUP BY bike_id
 ORDER BY birth_year;
 ```
-
-```{r}
-trips <- dbGetQuery(db, 
-                    'SELECT station_id, name, avg_lat, avg_lon
-                     FROM trips 
-                     LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
-                     WHERE start_time > "2017-01-01 06:00:00" AND stop_time < "2017-01-01 10:00:00"
-                     GROUP BY station_id
-                    ORDER BY start_time;')
-```
-
-```{r}
-trips_plot <- leaflet() %>%
-  addTiles() %>%
-  addCircleMarkers(data = trips, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
-
-trips_plot
-```     
+  
 
 ```{r}
 young_users <- dbGetQuery(db, 
@@ -125,7 +72,7 @@ FROM trips
 WHERE user_type = 'subscriber'
 AND birth_year > 1980
 GROUP BY birth_year
-ORDER BY birth_year DESC
+ORDER BY birth_year DESC;
 ")
 ```
 
@@ -156,7 +103,7 @@ durationbyage <- dbGetQuery(db,
                             AND birth_year >= 1945
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC
-                            LIMIT 5")
+                            LIMIT 5;")
 durationbyage
 ```
 
@@ -169,7 +116,7 @@ durationbyage_gg <- dbGetQuery(db,
                             AND start_time > '2017-01-01 06:00:00' AND stop_time < '2017-01-01 10:00:00'
                             AND birth_year >= 1945
                             GROUP BY birth_year
-                            ORDER BY total_number_of_subscribers DESC")
+                            ORDER BY total_number_of_subscribers DESC;")
 durationbyage_gg
 ```
 
