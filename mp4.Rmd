@@ -72,6 +72,7 @@ GROUP BY birth_year;')
 ```
 
 ```{r}
+ggplot(young_users, (aes ))
 
 ```
 
