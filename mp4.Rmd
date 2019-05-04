@@ -24,12 +24,78 @@ knitr::opts_chunk$set(connection = db, max.print = 20)
 ```
 
 
+```{sql connection = db}
+#SQL Query to Join the Tables
+
+SELECT station_id, name, avg_lat, avg_lon
+FROM trips 
+LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
+WHERE start_time > "2017-01-01 06:00:00" AND stop_time < "2017-01-01 10:00:00"
+GROUP BY station_id
+ORDER BY start_time;
+```
+
+```{sql connection = db}
+#SQL Query to Count Unique Bikes
+
+SELECT COUNT(DISTINCT bike_id) AS number_of_bikes
+FROM trips 
+```
+
+```{sql connection = db}
+#SQL Query to find number of users that are young
+
+SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
+FROM trips 
+WHERE user_type = 'subscriber'
+AND birth_year > 1980
+GROUP BY birth_year
+ORDER BY birth_year DESC
+```
 
 
 
+
+
+```{sql connection=db}
+SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age, bike_id
+FROM trips 
+WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
+GROUP BY bike_id
+ORDER BY birth_year;
+```
+  
+
+```{r}
+young_users <- dbGetQuery(db, 
+                    "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
+FROM trips 
+WHERE user_type = 'subscriber'
+AND birth_year > 1980
+GROUP BY birth_year
+ORDER BY birth_year DESC;
+")
+```
+
+```{r}
+young_users_plot <- ggplot(young_users, aes(x = birth_year, y = number_of_users))
+```
+
+```{r}
+old_users <- dbGetQuery(db,
+                     "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
+                      FROM trips 
+                      WHERE user_type = 'subscriber'
+                      AND birth_year < 1980
+                      GROUP BY birth_year
+                      ORDER BY birth_year DESC;"
+                          )
+```
+>>>>>>> 90ad0793b88199938748541759c5b03dce933305
 
 ```{r}
 # figuring out the duration by age 
+
 durationbyage <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
                             FROM trips
@@ -39,7 +105,7 @@ durationbyage <- dbGetQuery(db,
                             AND birth_year >= 1945
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC
-                            LIMIT 5")
+                            LIMIT 5;")
 durationbyage
 ```
 
@@ -52,7 +118,7 @@ durationbyage_gg <- dbGetQuery(db,
                             AND start_time > '2017-01-01 06:00:00' AND stop_time < '2017-01-01 10:00:00'
                             AND birth_year >= 1945
                             GROUP BY birth_year
-                            ORDER BY total_number_of_subscribers DESC")
+                            ORDER BY total_number_of_subscribers DESC;")
 durationbyage_gg
 ```
 
@@ -75,4 +141,3 @@ duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number
 
 duration_ggplot
 ```
-
