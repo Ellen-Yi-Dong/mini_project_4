@@ -64,6 +64,19 @@ ORDER BY birth_year DESC
 ```
 
 ```{r}
+after1980 <- dbGetQuery(db,
+                        'SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_after1980
+FROM trips 
+WHERE user_type = "subscriber" AND birth_year >= 1980
+GROUP BY birth_year;')
+```
+
+```{r}
+
+```
+
+
+```{r}
 trips <- dbGetQuery(db, 
                     'SELECT station_id, name, avg_lat, avg_lon
                      FROM trips 
