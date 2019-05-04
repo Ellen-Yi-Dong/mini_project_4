@@ -56,7 +56,6 @@ ORDER BY birth_year DESC
 SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
 WHERE user_type = 'subscriber'
-AND birth_year < 1980
 GROUP BY birth_year
 ORDER BY birth_year DESC
 
@@ -72,9 +71,38 @@ GROUP BY birth_year;')
 ```
 
 ```{r}
-
+plto1 <- ggplot(after1980, aes(x = birth_year, y = total_of_users_after1980)) + geom_col()
 ```
 
+```{r}
+plto1
+```
+
+```{r}
+plot1df <- dbGetQuery(db,
+                        'SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
+FROM trips 
+WHERE user_type = "subscriber"
+GROUP BY birth_year
+ORDER BY birth_year;')
+```
+
+```{sql connection=db}
+SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
+FROM trips 
+WHERE user_type = "subscriber"
+GROUP BY birth_year
+ORDER BY birth_year
+```
+
+
+```{r}
+plot1 <- ggplot(plot1df, aes(x = birth_year, y = total_of_users_by_age)) + geom_col()
+```
+
+```{r}
+plot1
+```
 
 ```{r}
 trips <- dbGetQuery(db, 
