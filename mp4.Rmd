@@ -6,22 +6,21 @@ output:
   html_document:
     code_folding: hide
 ---
+```{r, message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 #Opening the libraries, getting scidb data
-```{r, message = FALSE, warning = FALSE}
+
 library(tidyverse)
 library(RMySQL)
+library(leaflet)
+library(sf)
+
 db <- dbConnect(MySQL(), 
                 host = "scidb.smith.edu", 
                 user = "mth292", 
                 password = "RememberPi", 
                 dbname = "citibike")
 knitr::opts_chunk$set(connection = db, max.print = 20)
-```
-
-```{r}
-library(leaflet)
-library(sf)
 ```
 
 ```{sql connection = db}
