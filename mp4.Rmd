@@ -90,11 +90,12 @@ ORDER BY birth_year;')
 ```
 
 ```{sql connection=db}
-SELECT user_type, birth_year, COUNT(user_type) AS total_of_users_by_age
+SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age, bike_id
 FROM trips 
-WHERE user_type = "subscriber"
-GROUP BY user_type
+WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
+GROUP BY bike_id
 ORDER BY birth_year;
+
 ```
 
 ```{r}
