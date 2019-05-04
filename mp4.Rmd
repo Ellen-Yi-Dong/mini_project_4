@@ -100,14 +100,24 @@ GROUP BY birth_year
 ORDER BY birth_year
 ```
 
-
 ```{r}
-plot1 <- ggplot(plot1df, aes(x = birth_year, y = total_of_users_by_age)) + geom_col()
+gender <- dbGetQuery(db, 
+                     "SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
+                      FROM trips 
+                      WHERE user_type = 'subscriber'
+                      GROUP BY birth_year 
+                      ORDER BY birth_year;")
+View(gender)
 ```
 
+
 ```{r}
+plot1 <- ggplot(plot1df, aes(x = birth_year, y = total_of_users_by_age, fill = gender)) + 
+  geom_col()
+
 plot1
 ```
+
 
 ```{r}
 trips <- dbGetQuery(db, 
