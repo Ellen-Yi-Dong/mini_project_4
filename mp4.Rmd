@@ -83,6 +83,7 @@ plot1
 plot1df <- dbGetQuery(db,
                         'SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
 FROM trips 
+WHERE user_type = "subscriber" AND birth_year > 1974
 WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
 GROUP BY birth_year
 ORDER BY birth_year;')
@@ -151,3 +152,12 @@ trips_plot <- leaflet() %>%
 trips_plot
 ```
 
+```{r}
+# figuring out the duration by age 
+durationbyage <- dbGetQuery(db,
+                            "SELECT duration, birth_year, user_type, start_station_id, end_station_id
+                            FROM trips 
+                            LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
+                            GROUP BY birth_year;"
+                            )
+```
