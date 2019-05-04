@@ -63,5 +63,4 @@ trips_plot <- leaflet() %>%
   addCircleMarkers(data = trips, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
 
 trips_plot
-```
-
+```     
