@@ -41,7 +41,7 @@ FROM trips
 
 ```{sql connection = db}
 #SQL Query to Join the Tables
-#users that are youg
+#users that are young
 SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
 WHERE user_type = 'subscriber'
