@@ -41,10 +41,26 @@ FROM trips
 
 ```{sql connection = db}
 #SQL Query to Join the Tables
-SELECT COUNT(user_type) AS number_of_users
+#users that are youg
+SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
 WHERE user_type = 'subscriber'
-GROUP BY bike_id
+AND birth_year > 1980
+GROUP BY birth_year
+ORDER BY birth_year DESC
+```
+
+```{sql, connection = db}
+#users that are old
+
+SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
+FROM trips 
+WHERE user_type = 'subscriber'
+AND birth_year < 1980
+GROUP BY birth_year
+ORDER BY birth_year DESC
+
+
 ```
 
 ```{r}
@@ -55,6 +71,24 @@ trips <- dbGetQuery(db,
                      WHERE start_time > "2017-01-01 06:00:00" AND stop_time < "2017-01-01 10:00:00"
                      GROUP BY station_id
                     ORDER BY start_time;')
+
+young_users <- dbGetQuery(db, 
+                    "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
+FROM trips 
+WHERE user_type = 'subscriber'
+AND birth_year > 1980
+GROUP BY birth_year
+ORDER BY birth_year DESC
+")
+
+old_users <- dbGetQuery(db,
+                     "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
+                      FROM trips 
+                      WHERE user_type = 'subscriber'
+                      AND birth_year < 1980
+                      GROUP BY birth_year
+                      ORDER BY birth_year DESC;"
+                          )
 ```
 
 ```{r}
