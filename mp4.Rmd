@@ -70,14 +70,6 @@ WHERE user_type = "subscriber" AND birth_year >= 1980
 GROUP BY birth_year;')
 ```
 
-```{r}
-
-plot1 <- ggplot(after1980, aes(x = birth_year, y = total_of_users_after1980)) + geom_col()
-```
-
-```{r}
-plot1
-```
 
 ```{r}
 plot1df <- dbGetQuery(db,
@@ -98,23 +90,7 @@ ORDER BY birth_year;
 
 ```
 
-```{r}
-gender <- dbGetQuery(db, 
-                     "SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age
-                      FROM trips 
-                      WHERE user_type = 'subscriber'
-                      GROUP BY birth_year 
-                      ORDER BY birth_year;")
-View(gender)
-```
 
-
-```{r}
-plot1 <- ggplot(plot1df, aes(x = birth_year, y = total_of_users_by_age, fill = gender)) + 
-  geom_col()
-
-plot1
-```
 
 
 ```{r}
@@ -145,13 +121,6 @@ old_users <- dbGetQuery(db,
                           )
 ```
 
-```{r}
-trips_plot <- leaflet() %>%
-  addTiles() %>%
-  addCircleMarkers(data = trips, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
-
-trips_plot
-```
 
 ```{r}
 # figuring out the duration by age 
@@ -165,10 +134,33 @@ durationbyage <- dbGetQuery(db,
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC
                             LIMIT 5")
+durationbyage
 ```
 
 ```{r}
-plot2 <- ggplot(durationbyage, aes(x = birth_year, y = total_number_of_users)) + geom_col()
-plot2
+durationbyage_gg <- dbGetQuery(db,
+                            "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
+                            FROM trips
+                            LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
+                            WHERE user_type = 'subscriber'
+                            AND start_time > '2017-01-01 06:00:00' AND stop_time < '2017-01-01 10:00:00'
+                            AND birth_year >= 1945
+                            GROUP BY birth_year
+                            ORDER BY total_number_of_subscribers DESC")
+durationbyage_gg
+```
+
+```{r}
+duration_plot <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(data = durationbyage, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
+
+duration_plot
+```
+
+```{r}
+duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number_of_subscribers)) +
+  geom_col()
+duration_ggplot
 ```
 
