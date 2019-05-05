@@ -95,10 +95,9 @@ old_users <- dbGetQuery(db,
                       ORDER BY birth_year DESC;"
                           )
 ```
->>>>>>> 90ad0793b88199938748541759c5b03dce933305
 
 ```{r}
-# figuring out the duration by age 
+# figuring out top 5 stations by most subscribers 
 
 durationbyage <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
@@ -114,7 +113,7 @@ durationbyage
 ```
 
 ```{r}
-#Getting duration by age into R
+#Getting top 5 stations by most subscribers into R
 
 durationbyage_gg <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
@@ -129,7 +128,7 @@ durationbyage_gg
 ```
 
 ```{r}
-#Making leaflet of top 5 stations by duration
+#Making leaflet of top 5 stations by subscribers
 
 duration_plot <- leaflet() %>%
   addTiles() %>%
