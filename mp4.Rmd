@@ -148,8 +148,8 @@ most_subscribers_ggplot <- ggplot(most_subscribers_gg, aes(x = birth_year, y = t
   geom_smooth(aes(color = "red")) + 
   labs(title = "How Many Subscribers Are In Each Birth Year?",
        x = "Birth Year",
-       y = "Total Number of Subscribers", 
-       color = "Line") 
+       y = "Total Number of Subscribers") +
+  theme(legend.position = "none")
 
 
 most_subscribers_ggplot
