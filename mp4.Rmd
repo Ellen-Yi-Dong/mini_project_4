@@ -23,6 +23,7 @@ db <- dbConnect(MySQL(),
 knitr::opts_chunk$set(connection = db, max.print = 20)
 ```
 
+
 ```{sql connection = db}
 #SQL Query to Join the Tables
 
@@ -94,6 +95,7 @@ old_users <- dbGetQuery(db,
                       ORDER BY birth_year DESC;"
                           )
 ```
+>>>>>>> 90ad0793b88199938748541759c5b03dce933305
 
 ```{r}
 # figuring out the duration by age 
