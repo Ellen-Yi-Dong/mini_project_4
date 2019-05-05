@@ -4,6 +4,7 @@ author: "Harriet Brookes-Gray, Ellen Dong, Christina Hung"
 date: "April 27, 2019"
 output: 
   html_document:
+    df_print: paged
     code_folding: hide
 ---
 ```{r, message = FALSE, warning = FALSE}
@@ -53,11 +54,9 @@ GROUP BY birth_year
 ORDER BY birth_year DESC
 ```
 
+```{sql connection = db}
+#SQL Query to find info on oldest subscribers
 
-
-
-
-```{sql connection=db}
 SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age, bike_id
 FROM trips 
 WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
@@ -67,6 +66,8 @@ ORDER BY birth_year;
   
 
 ```{r}
+#Moving data on young users into R
+
 young_users <- dbGetQuery(db, 
                     "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
@@ -78,10 +79,14 @@ ORDER BY birth_year DESC;
 ```
 
 ```{r}
+#Plotting proportion of young users
+
 young_users_plot <- ggplot(young_users, aes(x = birth_year, y = number_of_users))
 ```
 
 ```{r}
+#Getting info on old users into R
+
 old_users <- dbGetQuery(db,
                      "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
                       FROM trips 
@@ -91,12 +96,11 @@ old_users <- dbGetQuery(db,
                       ORDER BY birth_year DESC;"
                           )
 ```
->>>>>>> 90ad0793b88199938748541759c5b03dce933305
 
 ```{r}
-# figuring out the duration by age 
+# figuring out top 5 stations by most subscribers 
 
-durationbyage <- dbGetQuery(db,
+most_subscribers <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
                             FROM trips
                             LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
@@ -106,11 +110,13 @@ durationbyage <- dbGetQuery(db,
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC
                             LIMIT 5;")
-durationbyage
+most_subscribers
 ```
 
 ```{r}
-durationbyage_gg <- dbGetQuery(db,
+#Getting top 5 stations by most subscribers into R
+
+most_subscribers_gg <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
                             FROM trips
                             LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
@@ -119,19 +125,25 @@ durationbyage_gg <- dbGetQuery(db,
                             AND birth_year >= 1945
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC;")
-durationbyage_gg
+most_subscribers_gg
 ```
 
+
+**Map of Top 5 Bike Stations with Most Subscriber Users**
 ```{r}
-duration_plot <- leaflet() %>%
+#Making leaflet of top 5 stations by subscribers
+
+most_subscribers_plot <- leaflet() %>%
   addTiles() %>%
-  addMarkers(data = durationbyage, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
+  addMarkers(data = most_subscribers, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
 
-duration_plot
+most_subscribers_plot
 ```
 
 ```{r}
-duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number_of_subscribers)) +
+#Plotting number of subscribers per birth year
+
+most_subscribers_ggplot <- ggplot(most_subscribers_gg, aes(x = birth_year, y = total_number_of_subscribers)) +
   geom_col() +
   geom_smooth(aes(color = "red")) + 
   labs(title = "How Many Subscribers Are In Each Birth Year?",
@@ -140,5 +152,5 @@ duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number
        color = "Line") 
 
 
-duration_ggplot
+most_subscribers_ggplot
 ```
