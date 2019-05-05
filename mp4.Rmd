@@ -4,6 +4,7 @@ author: "Harriet Brookes-Gray, Ellen Dong, Christina Hung"
 date: "April 27, 2019"
 output: 
   html_document:
+    df_print: paged
     code_folding: hide
 ---
 ```{r, message = FALSE, warning = FALSE}
@@ -99,7 +100,7 @@ old_users <- dbGetQuery(db,
 ```{r}
 # figuring out top 5 stations by most subscribers 
 
-durationbyage <- dbGetQuery(db,
+most_subscribers <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
                             FROM trips
                             LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
@@ -109,13 +110,13 @@ durationbyage <- dbGetQuery(db,
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC
                             LIMIT 5;")
-durationbyage
+most_subscribers
 ```
 
 ```{r}
 #Getting top 5 stations by most subscribers into R
 
-durationbyage_gg <- dbGetQuery(db,
+most_subscribers_gg <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
                             FROM trips
                             LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
@@ -124,23 +125,23 @@ durationbyage_gg <- dbGetQuery(db,
                             AND birth_year >= 1945
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC;")
-durationbyage_gg
+most_subscribers_gg
 ```
 
 ```{r}
 #Making leaflet of top 5 stations by subscribers
 
-duration_plot <- leaflet() %>%
+most_subscribers_plot <- leaflet() %>%
   addTiles() %>%
-  addMarkers(data = durationbyage, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
+  addMarkers(data = most_subscribers, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
 
-duration_plot
+most_subscribers_plot
 ```
 
 ```{r}
 #Plotting number of subscribers per birth year
 
-duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number_of_subscribers)) +
+most_subscribers_ggplot <- ggplot(most_subscribers_gg, aes(x = birth_year, y = total_number_of_subscribers)) +
   geom_col() +
   geom_smooth(aes(color = "red")) + 
   labs(title = "How Many Subscribers Are In Each Birth Year?",
@@ -148,5 +149,5 @@ duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number
        y = "Total Number of Subscribers" ) 
 
 
-duration_ggplot
+most_subscribers_ggplot
 ```
