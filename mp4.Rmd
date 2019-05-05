@@ -136,7 +136,8 @@ duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number
   geom_smooth(aes(color = "red")) + 
   labs(title = "How Many Subscribers Are In Each Birth Year?",
        x = "Birth Year",
-       y = "Total Number of Subscribers" ) 
+       y = "Total Number of Subscribers", 
+       color = "Line") 
 
 
 duration_ggplot
