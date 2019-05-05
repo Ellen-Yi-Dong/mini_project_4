@@ -52,11 +52,9 @@ GROUP BY birth_year
 ORDER BY birth_year DESC
 ```
 
+```{sql connection = db}
+#SQL Query to find info on oldest subscribers
 
-
-
-
-```{sql connection=db}
 SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age, bike_id
 FROM trips 
 WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
@@ -66,6 +64,8 @@ ORDER BY birth_year;
   
 
 ```{r}
+#Moving data on young users into R
+
 young_users <- dbGetQuery(db, 
                     "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
 FROM trips 
@@ -77,10 +77,14 @@ ORDER BY birth_year DESC;
 ```
 
 ```{r}
+#Plotting proportion of young users
+
 young_users_plot <- ggplot(young_users, aes(x = birth_year, y = number_of_users))
 ```
 
 ```{r}
+#Getting info on old users into R
+
 old_users <- dbGetQuery(db,
                      "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
                       FROM trips 
@@ -108,6 +112,8 @@ durationbyage
 ```
 
 ```{r}
+#Getting duration by age into R
+
 durationbyage_gg <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
                             FROM trips
@@ -121,6 +127,8 @@ durationbyage_gg
 ```
 
 ```{r}
+#Making leaflet of top 5 stations by duration
+
 duration_plot <- leaflet() %>%
   addTiles() %>%
   addMarkers(data = durationbyage, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
@@ -129,6 +137,8 @@ duration_plot
 ```
 
 ```{r}
+#Plotting number of subscribers per birth year
+
 duration_ggplot <- ggplot(durationbyage_gg, aes(x = birth_year, y = total_number_of_subscribers)) +
   geom_col() +
   geom_smooth(aes(color = "red")) + 
