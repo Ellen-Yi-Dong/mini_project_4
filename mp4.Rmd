@@ -100,7 +100,7 @@ Citi Bike is [one of the largest bike sharing systems in the country.](https://w
 	
 However, Citi Bikes sound better in theory than in practice. [A 2018 article by Streetsblog NYC](https://nyc.streetsblog.org/2018/09/26/its-not-your-imagination-something-is-seriously-wrong-with-citi-bike-right-now/ "Streetsblog NYC") reveals that Citi Bike is having issues maintaining their bikes, meaning that only three-quarters of their stated number of bikes are actually available to customers.  Citi Bike is also not subsidized by New York City, which may contribute to their difficulties in keeping a sufficient number of bikes in working condition. As if that wasn’t enough, [a 2017 article from Bklyner](https://bklyner.com/citi-bike-thefts-rise-due-improper-docking-cops-warn/ "Bklyner") talks about how Citi Bikes are being stolen if they are not docked properly, which can lead the customer to being charged $1,200.  
 	
-Given all of this, who uses Citi Bikes? Are they a useful mode of everyday transportation for New Yorkers?
+> Given all of this, who uses Citi Bikes? Are they a useful mode of everyday transportation for New Yorkers?
 
 To investigate this question, we analyzed the Citi Bike data from 2017 that captures information on two types of Citi Bike users: customers and subscribers. The type of user can be interpreted as an indicator of who is using the Citi Bikes, since ‘customers’ can only purchase a 24-hour or 3-day pass, while a subscriber can purchase an annual membership. The difference in purchasing options for each user suggests that customers are more likely to be tourists while subscribers are more likely to be NYC residents. We used this data to compare two plots between customers and subscribers.  
 
@@ -164,7 +164,7 @@ The number of users of the Citi Bikes within 2017 appears overwhelmingly to be s
 
 The search for alternative modes of transport for NYC residents is becoming increasingly important as NYC roles out their [congestion tax](https://www.nytimes.com/2019/03/26/nyregion/what-is-congestion-pricing.html) on vehicles traveling into or within Manhattan. The plan is to utilize the tax revenues from this congestion pricing to improve the subway system. This evidence from Citi Bike suggests that bike sharing may also be a worthy alternative in to which these revenues could be funneled. 
 
-Thus, it appears that bike sharing may be a promising transport alternative in NYC. In support of our hypothesis, the data shows that Citi Bike users are largely people born after 1980; Millenials and Gen Z. This evidence suggests that younger New Yorkers are more inclined to use the method of bike sharing as mode of transportation.  This may be because newer generations are more environmentally and health conscious, so they opt to use bicycles versus other modes of public transport.
+Thus, it appears that bike sharing may be a promising transport alternative in NYC. In support of our hypothesis, the data shows that Citi Bike users are largely people born after 1980: Millenials and Gen Z. This evidence suggests that younger New Yorkers are more inclined to use the method of bike sharing as mode of transportation.  This may be because newer generations are more environmentally and health conscious, so they opt to use bicycles versus other modes of public transport.
 
 ```{r, results = 'hide'}
 #SQL query to find top 5 stations by most subscribers (using indexes)
