@@ -7,7 +7,7 @@ output:
     df_print: paged
     code_folding: hide
 ---
-```{r, message = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = FALSE, results = 'hide'}
 knitr::opts_chunk$set(echo = TRUE)
 #Opening the libraries, getting scidb data
 
@@ -27,7 +27,7 @@ knitr::opts_chunk$set(connection = db, max.print = 20)
 ```
 
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL Query to Join the Tables
 
 dbGetQuery (db,
@@ -39,7 +39,7 @@ dbGetQuery (db,
             ORDER BY start_time;")
 ```
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL Query to Count Unique Bikes (uses bike_id key/index)
 
 dbGetQuery (db,
@@ -47,7 +47,7 @@ dbGetQuery (db,
             FROM trips;")
 ```
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL query to find young subscribers and moving it into R
 
 young_subscribers <- dbGetQuery(db, 
@@ -65,7 +65,7 @@ young_subscribers <- dbGetQuery(db,
 young_subscribers_plot <- ggplot(young_subscribers, aes(x = birth_year, y = number_of_users))
 ```
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL query to find old subscribers and moving it into R
 
 old_subscribers <- dbGetQuery(db,
@@ -74,12 +74,11 @@ old_subscribers <- dbGetQuery(db,
                       WHERE user_type = 'subscriber'
                       AND birth_year < 1980
                       GROUP BY birth_year
-                      ORDER BY birth_year DESC;"
-                          )
+                      ORDER BY birth_year DESC;")
 ```
 
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #creating table for determining the gender of the subscribers
 
 gender_subscribers <- dbGetQuery(db,
@@ -88,17 +87,20 @@ gender_subscribers <- dbGetQuery(db,
                       WHERE user_type = 'subscriber'
                       AND birth_year BETWEEN 1945 AND 2001
                       AND start_time > '2017-01-01 06:00:00' AND stop_time < '2017-01-01 10:00:00'
-                      GROUP BY gender;"
-                          ) 
-
-gender_subscribers
+                      GROUP BY gender;") 
 ```
 
 
 
 ```{r}
 #creating the graph of the gender of the subscribers 
+
 cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
+
+
+cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
+
+
 gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
   geom_col(aes(fill = factor(gender))) + 
   labs(title = "The Total Number of Subscribers For Each Gender", 
@@ -110,16 +112,9 @@ gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subs
   scale_fill_manual(values = cols, 
                      limits = c("0", "1", "2"), 
                      labels = c("Unknown/Don't Specify with Either", "Male", "Female"))
-
-gender_s
-
-
 ```
 
-
-**compare the number of subscribers to customers during rush hour**
-
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL query to count number of subscribers
 
 count_subscribers <- dbGetQuery(db, 
@@ -128,28 +123,26 @@ count_subscribers <- dbGetQuery(db,
                             WHERE user_type = 'subscriber'
 AND birth_year >=1945
                            GROUP BY birth_year;")
-count_subscribers
 ```
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL query to count number of customers
 
 count_customers <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_customers
                             FROM trips
-                            WHERE user_type = 'customer'
-AND birth_year >= 1945
+                            WHERE user_type = 'customer' AND birth_year >= 1945
                             GROUP BY birth_year;")
-count_customers
 
 ```
 
-```{r, echo = FALSE}
+```{r, results = 'hide', message = FALSE}
 #Joining the tables that count subscribers and customers
 
 total_users <- count_subscribers %>% full_join(count_customers)
-total_users
 ```
+
+**Compare the number of subscribers to customers during rush hour**
 
 ```{r warning = FALSE, message = FALSE, fig.show = "hold", out.width = "50%"}
 #Plotting subscribers vs. customers
@@ -182,7 +175,7 @@ subs_vs_cus2
 
 
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL query to find top 5 stations by most subscribers (using indexes)
 
 most_subscribers <- dbGetQuery(db,
@@ -195,10 +188,9 @@ most_subscribers <- dbGetQuery(db,
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC
                             LIMIT 5;")
-most_subscribers
 ```
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 #SQL query to get top 5 stations by most subscribers into R (using indexes)
 
 most_subscribers_gg <- dbGetQuery(db,
@@ -210,7 +202,6 @@ most_subscribers_gg <- dbGetQuery(db,
                             AND birth_year >= 1945
                             GROUP BY birth_year
                             ORDER BY total_number_of_subscribers DESC;")
-most_subscribers_gg
 ```
 
 
@@ -221,8 +212,6 @@ most_subscribers_gg
 most_subscribers_plot <- leaflet() %>%
   addTiles() %>%
   addMarkers(data = most_subscribers, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
-
-most_subscribers_plot
 ```
 
 ```{r}
@@ -235,7 +224,4 @@ most_subscribers_ggplot <- ggplot(most_subscribers_gg, aes(x = birth_year, y = t
        x = "Birth Year",
        y = "Total Number of Subscribers") +
   theme(legend.position = "none")
-
-
-most_subscribers_ggplot
 ```
