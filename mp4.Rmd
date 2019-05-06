@@ -201,8 +201,6 @@ However, it could be argued that bike sharing may not be a worthy transport alte
 
 While Citi Bike showed a positive trend in popularity among young users, the division in sex among subscribers appears less optimistic. Significantly more male subscribers use the bike sharing service during morning rush hours than females. A higher frequency of male users suggests that perhaps women feel less safe using bike sharing. Another possibility is that the Citi Bikes are not built with female proportions in mind. For example, a Citi Bike weighs approximately 45 pounds, and [an ideal rider would be 5’10”.](http://www.nycbikemaps.com/citi-bike/ "NYC Bike Maps") This weight and size may make it more inaccessible to women, who, in the US, have an average height of around 5’4”. Hence, Citi Bikes may not be a viable alternative. 
 
-**Graph of the Gender of the Subscribers**
-
 ```{r}
 #creating the graph of the gender of the subscribers 
 
