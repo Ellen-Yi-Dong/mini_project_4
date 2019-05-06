@@ -90,6 +90,7 @@ gender_subscribers <- dbGetQuery(db,
                       AND start_time > '2017-01-01 06:00:00' AND stop_time < '2017-01-01 10:00:00'
                       GROUP BY gender;") 
 ```
+
 As one of the largest cities in the United States, New York City faces a problem of congestion on its roads. However, one increasingly popular alternative mode of transportation is bicycles. Evidence lies in New York’s most popular bike sharing system, Citi Bike, that has rapidly expanded over the last four years. In July of 2017, Citi Bike reported that they had 130,000 annual subscribers,. By October 2017, they had reached a total of 50 million rides since launching in May 2013, averaging out to 31,000 bikes rides per day. Does this increase in popularity suggest that bike sharing is a promising transportation alternative in New York City?
 
 Citi Bike is one of the largest bike sharing systems in the country. They currently claim to have 12,000 bikes and 750 stations across Manhattan, Brooklyn, Queens, and Jersey City.  According to their website, these bikes are designed for “quick trips with convenience in mind,” and are a “fun and affordable way to get around town.” Customers can check out a bike from any one of their stations, use it, and then return it when they’re done. 
@@ -97,6 +98,25 @@ Citi Bike is one of the largest bike sharing systems in the country. They curren
 However, Citi Bikes sound better in theory than in practice. A 2018 article by Streetsblog NYC reveals that Citi Bike is having issues maintaining their bikes, meaning that only three-quarters of their stated number of bikes are actually available to customers.  Citi Bike is also not subsidized by New York City, which may contribute to their difficulties in keeping a sufficient number of bikes in working condition. As if that wasn’t enough, a 2017 article from Bklyner talks about how Citi Bikes are being stolen if they are not docked properly, which can lead the customer to being charged $1,200.  
 	
 Given all of this, who uses Citi Bikes? Are they a useful mode of everyday transportation for New Yorkers?
+**Graph of the Gender of the Subscribers**
+```{r}
+#creating the graph of the gender of the subscribers 
+
+cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
+
+gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
+  geom_col(aes(fill = factor(gender))) + 
+  labs(title = "The Total Number of Subscribers For Each Gender", 
+       x = "Gender", 
+       y = "Number of Subscribers", 
+       fill = "Gender") +
+  scale_x_continuous(breaks = c(0, 1, 2), 
+                     labels = c("Unknown/Don't Specify with Either", "Male", "Female")) +
+  scale_fill_manual(values = cols, 
+                     limits = c("0", "1", "2"), 
+                     labels = c("Unknown/Don't Specify with Either", "Male", "Female"))
+gender_s
+```
 
 To investigate this question, we analyzed the Citi Bike data from 2017 that captures information on two types of Citi Bike users: customers and subscribers. The type of user can be interpreted as an indicator of who is using the Citi Bikes, since ‘customers’ can only purchase a 24-hour or 3-day pass, while a subscriber can purchase an annual membership. The difference in purchasing options for each user suggests that customers are more likely to be tourists while subscribers are more likely to be NYC residents. We used this data to compare two plots between customers and subscribers.  
 ```{r, results = 'hide'}
