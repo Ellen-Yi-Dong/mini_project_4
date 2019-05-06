@@ -15,6 +15,8 @@ library(tidyverse)
 library(RMySQL)
 library(leaflet)
 library(sf)
+library(dplyr)
+library(ggplot2)
 
 db <- dbConnect(MySQL(), 
                 host = "scidb.smith.edu", 
@@ -98,7 +100,11 @@ gender_subscribers
 #creating the graph of the gender of the subscribers 
 
 gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
-  geom_col()
+  geom_col(aes(fill = gender)) + 
+  labs(title = "The Total Number of Subscribers For Each Gender", 
+       x = "Gender", 
+       y = "Number of Subscribers") +
+  scale_color_manual(values = c("0" = "gray35", "1" = "deepskyblue1", "2" = "deeppink3"))
 
 gender_s
 
@@ -108,17 +114,44 @@ gender_s
 #compare the number of subscribers to customers during rush hour 
 
 ```{r}
+count_subscribers <- dbGetQuery(db, 
+                          "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers    
+                            FROM trips
+                            WHERE user_type = 'subscriber'
+AND birth_year >=1945
+                           GROUP BY birth_year;")
+count_subscribers
+```
 
-
-
-
-
+```{r}
+count_customers <- dbGetQuery(db,
+                            "SELECT birth_year, COUNT(user_type) AS total_number_of_customers
+                            FROM trips
+                            WHERE user_type = 'customer'
+AND birth_year >= 1945
+                            GROUP BY birth_year;")
+count_customers
 
 ```
 
+```{r}
+total_users <- count_subscribers %>% full_join(count_customers)
+total_users
+```
 
 
+```{r warning = FALSE, message = FALSE, fig.show = "hold", out.width = "50%"}
+subs_vs_cus<-ggplot(data = total_users, aes(x = birth_year, y = total_number_of_customers)) +
+  geom_col()
 
+subs_vs_cus2 <-ggplot(data = total_users, aes(x = birth_year, y = total_number_of_subscribers)) +
+  geom_col()
+
+# left image
+subs_vs_cus
+# right image
+subs_vs_cus2
+```
 
 
 
