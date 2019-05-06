@@ -164,7 +164,7 @@ The number of users of the Citi Bikes within 2017 appears overwhelmingly to be s
 
 The search for alternative modes of transport for NYC residents is becoming increasingly important as NYC roles out their congestion tax on vehicles traveling into or within Manhattan. The plan is to utilize the tax revenues from this congestion pricing to improve the subway system. This evidence from Citi Bike suggests that bike sharing may also be a worthy alternative in to which these revenues could be funneled. 
 
-Thus, it appears that bike sharing may be a promising transport alternative in NYC. In support of our hypothesis, the data shows that Citi Bike users are largely people born after 1980; Millenials and Gen Z. This evidence suggests that younger New Yorkers are more inclined to use the method of bike sharing as mode of transportation.  This may be because newer generations are more environmentally and health conscious, so they opt to use bicycles versus other modes of public transport.
+Thus, it appears that bike sharing may be a promising transport alternative in NYC. In support of our hypothesis, the data shows that Citi Bike users are largely people born after 1980: Millenials and Gen Z. This evidence suggests that younger New Yorkers are more inclined to use the method of bike sharing as mode of transportation.  This may be because newer generations are more environmentally and health conscious, so they opt to use bicycles versus other modes of public transport.
 
 ```{r, results = 'hide'}
 #SQL query to find top 5 stations by most subscribers (using indexes)
