@@ -102,27 +102,6 @@ However, Citi Bikes sound better in theory than in practice. [A 2018 article by 
 	
 Given all of this, who uses Citi Bikes? Are they a useful mode of everyday transportation for New Yorkers?
 
-
-**Graph of the Gender of the Subscribers**
-```{r}
-#creating the graph of the gender of the subscribers 
-
-cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
-
-gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
-  geom_col(aes(fill = factor(gender))) + 
-  labs(title = "The Total Number of Subscribers For Each Gender", 
-       x = "Gender", 
-       y = "Number of Subscribers", 
-       fill = "Gender") +
-  scale_x_continuous(breaks = c(0, 1, 2), 
-                     labels = c("Unknown/Don't Specify with Either", "Male", "Female")) +
-  scale_fill_manual(values = cols, 
-                     limits = c("0", "1", "2"), 
-                     labels = c("Unknown/Don't Specify with Either", "Male", "Female"))
-gender_s
-```
-
 To investigate this question, we analyzed the Citi Bike data from 2017 that captures information on two types of Citi Bike users: customers and subscribers. The type of user can be interpreted as an indicator of who is using the Citi Bikes, since ‘customers’ can only purchase a 24-hour or 3-day pass, while a subscriber can purchase an annual membership. The difference in purchasing options for each user suggests that customers are more likely to be tourists while subscribers are more likely to be NYC residents. We used this data to compare two plots between customers and subscribers.  
 
 ```{r, results = 'hide'}
@@ -233,7 +212,9 @@ most_subscribers_ggplot
 However, it could be argued that bike sharing may not be a worthy transport alternative in NYC upon looking at a further breakdown of demographics of Citi Bike users. Our second point of analysis was to look at the division in sex among subscribers across all ages. We focused specifically on morning rush hours (6am-10am), as this is when subscribers who use this as an everyday mode of transport would be most active. 
 
 While Citi Bike showed a positive trend in popularity among young users, the division in sex among subscribers appears less optimistic. Significantly more male subscribers use the bike sharing service during morning rush hours than females. A higher frequency of male users suggests that perhaps women feel less safe using bike sharing. Another possibility is that the Citi Bikes are not built with female proportions in mind. For example, a Citi Bike weighs approximately 45 pounds, and [an ideal rider would be 5’10”.](http://www.nycbikemaps.com/citi-bike/ "NYC Bike Maps") This weight and size may make it more inaccessible to women, who, in the US, have an average height of around 5’4”. Hence, Citi Bikes may not be a viable alternative. 
+
 **Graph of the Gender of the Subscribers**
+
 ```{r}
 #creating the graph of the gender of the subscribers 
 
