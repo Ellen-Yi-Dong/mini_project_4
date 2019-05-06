@@ -27,6 +27,9 @@ db <- dbConnect(MySQL(),
 knitr::opts_chunk$set(connection = db, max.print = 20)
 ```
 
+GitHub Repository[^1]
+
+![Citi Bikes in NYC](https://www1.nyc.gov/assets/home/images/press_release/2018/November/pr576-18.jpg)
 
 ```{r, results = 'hide'}
 #SQL Query to Join the Tables
@@ -93,11 +96,13 @@ gender_subscribers <- dbGetQuery(db,
 
 As one of the largest cities in the United States, New York City faces a problem of congestion on its roads. However, one increasingly popular alternative mode of transportation is bicycles. Evidence lies in New York’s most popular bike sharing system, Citi Bike, that has rapidly expanded over the last four years. In July of 2017, Citi Bike reported that they had 130,000 annual subscribers,. By October 2017, they had reached a total of 50 million rides since launching in May 2013, averaging out to 31,000 bikes rides per day. Does this increase in popularity suggest that bike sharing is a promising transportation alternative in New York City?
 
-Citi Bike is one of the largest bike sharing systems in the country. They currently claim to have 12,000 bikes and 750 stations across Manhattan, Brooklyn, Queens, and Jersey City.  According to their website, these bikes are designed for “quick trips with convenience in mind,” and are a “fun and affordable way to get around town.” Customers can check out a bike from any one of their stations, use it, and then return it when they’re done. 
+Citi Bike is [one of the largest bike sharing systems in the country.](https://www.citibikenyc.com/how-it-works "Citi Bike Official Site") They currently claim to have 12,000 bikes and 750 stations across Manhattan, Brooklyn, Queens, and Jersey City.  According to their website, these bikes are designed for “quick trips with convenience in mind,” and are a “fun and affordable way to get around town.” Customers can check out a bike from any one of their stations, use it, and then return it when they’re done. 
 	
-However, Citi Bikes sound better in theory than in practice. A 2018 article by Streetsblog NYC reveals that Citi Bike is having issues maintaining their bikes, meaning that only three-quarters of their stated number of bikes are actually available to customers.  Citi Bike is also not subsidized by New York City, which may contribute to their difficulties in keeping a sufficient number of bikes in working condition. As if that wasn’t enough, a 2017 article from Bklyner talks about how Citi Bikes are being stolen if they are not docked properly, which can lead the customer to being charged $1,200.  
+However, Citi Bikes sound better in theory than in practice. [A 2018 article by Streetsblog NYC](https://nyc.streetsblog.org/2018/09/26/its-not-your-imagination-something-is-seriously-wrong-with-citi-bike-right-now/ "Streetsblog NYC") reveals that Citi Bike is having issues maintaining their bikes, meaning that only three-quarters of their stated number of bikes are actually available to customers.  Citi Bike is also not subsidized by New York City, which may contribute to their difficulties in keeping a sufficient number of bikes in working condition. As if that wasn’t enough, [a 2017 article from Bklyner](https://bklyner.com/citi-bike-thefts-rise-due-improper-docking-cops-warn/ "Bklyner") talks about how Citi Bikes are being stolen if they are not docked properly, which can lead the customer to being charged $1,200.  
 	
 Given all of this, who uses Citi Bikes? Are they a useful mode of everyday transportation for New Yorkers?
+
+
 **Graph of the Gender of the Subscribers**
 ```{r}
 #creating the graph of the gender of the subscribers 
@@ -119,6 +124,7 @@ gender_s
 ```
 
 To investigate this question, we analyzed the Citi Bike data from 2017 that captures information on two types of Citi Bike users: customers and subscribers. The type of user can be interpreted as an indicator of who is using the Citi Bikes, since ‘customers’ can only purchase a 24-hour or 3-day pass, while a subscriber can purchase an annual membership. The difference in purchasing options for each user suggests that customers are more likely to be tourists while subscribers are more likely to be NYC residents. We used this data to compare two plots between customers and subscribers.  
+
 ```{r, results = 'hide'}
 #SQL query to count number of subscribers
 
@@ -174,6 +180,7 @@ subs_vs_cus2 <- ggplot(data = total_users, aes(x = birth_year, y = total_number_
 subs_vs_cus
 subs_vs_cus2
 ```
+
 The number of users of the Citi Bikes within 2017 appears overwhelmingly to be subscribers rather than customers. This evidence is in line with the New York Department of Transportation's report that 49% of New Yorkers say they ride a bike at least a few times a month. Most importantly, this evidence suggests that bikes are widely used among New Yorker as a mode of transport. Therefore, New York City policy makers should consider bike sharing as a serious alternative mode of transport within the city. 
 
 The search for alternative modes of transport for NYC residents is becoming increasingly important as NYC roles out their congestion tax on vehicles traveling into or within Manhattan. The plan is to utilize the tax revenues from this congestion pricing to improve the subway system. This evidence from Citi Bike suggests that bike sharing may also be a worthy alternative in to which these revenues could be funneled. 
@@ -225,7 +232,7 @@ most_subscribers_ggplot
 
 However, it could be argued that bike sharing may not be a worthy transport alternative in NYC upon looking at a further breakdown of demographics of Citi Bike users. Our second point of analysis was to look at the division in sex among subscribers across all ages. We focused specifically on morning rush hours (6am-10am), as this is when subscribers who use this as an everyday mode of transport would be most active. 
 
-While Citi Bike showed a positive trend in popularity among young users, the division in sex among subscribers appears less optimistic. Significantly more male subscribers use the bike sharing service during morning rush hours than females. A higher frequency of male users suggests that perhaps women feel less safe using bike sharing. Another possibility is that the Citi Bikes are not built with female proportions in mind. For example, a Citi Bike weighs approximately 45 pounds, and an ideal rider would be 5’10”. This weight and size may make it more inaccessible to women, who, in the US, have an average height of around 5’4”. Hence, Citi Bikes may not be a viable alternative. 
+While Citi Bike showed a positive trend in popularity among young users, the division in sex among subscribers appears less optimistic. Significantly more male subscribers use the bike sharing service during morning rush hours than females. A higher frequency of male users suggests that perhaps women feel less safe using bike sharing. Another possibility is that the Citi Bikes are not built with female proportions in mind. For example, a Citi Bike weighs approximately 45 pounds, and [an ideal rider would be 5’10”.](http://www.nycbikemaps.com/citi-bike/ "NYC Bike Maps") This weight and size may make it more inaccessible to women, who, in the US, have an average height of around 5’4”. Hence, Citi Bikes may not be a viable alternative. 
 **Graph of the Gender of the Subscribers**
 ```{r}
 #creating the graph of the gender of the subscribers 
@@ -268,3 +275,5 @@ This evidence may appear to disprove our hypothesis that bike sharing is a promi
 Overall, we argue that Citi Bikes are potentially a very good alternative transportation system. They are environmentally friendly, health promoting, and as more people use bicycles frequently, the safer it becomes to do so. On the other hand, it seems that bike sharing is concentrated in wealthy areas and overwhelmingly faces males. However, if Citi Bike redesigned their bikes, and if the NYC government subsidized Citi Bike to make them cheaper and spread stations more widely, these problems could be mitigated. 
 
 
+
+[^1]: https://github.com/Ellen-Yi-Dong/mini_project_4
