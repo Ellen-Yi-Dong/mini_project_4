@@ -37,7 +37,7 @@ ORDER BY start_time;
 ```
 
 ```{sql connection = db}
-#SQL Query to Count Unique Bikes
+#SQL Query to Count Unique Bikes (uses bike_id key/index)
 
 SELECT COUNT(DISTINCT bike_id) AS number_of_bikes
 FROM trips 
@@ -61,7 +61,7 @@ SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age,
 FROM trips 
 WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
 GROUP BY bike_id
-ORDER BY birth_year;
+ORDER BY birth_year
 ```
   
 
@@ -98,7 +98,7 @@ old_users <- dbGetQuery(db,
 ```
 
 ```{r}
-# figuring out top 5 stations by most subscribers 
+# figuring out top 5 stations by most subscribers (using indexes)
 
 most_subscribers <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
@@ -114,7 +114,7 @@ most_subscribers
 ```
 
 ```{r}
-#Getting top 5 stations by most subscribers into R
+#Getting top 5 stations by most subscribers into R (using indexes)
 
 most_subscribers_gg <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
