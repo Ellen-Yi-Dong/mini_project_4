@@ -17,6 +17,7 @@ library(leaflet)
 library(sf)
 library(dplyr)
 library(ggplot2)
+library(scales)
 
 db <- dbConnect(MySQL(), 
                 host = "scidb.smith.edu", 
@@ -89,16 +90,13 @@ gender_subscribers <- dbGetQuery(db,
                       AND start_time > '2017-01-01 06:00:00' AND stop_time < '2017-01-01 10:00:00'
                       GROUP BY gender;") 
 ```
-
+**Graph of the Gender of the Subscribers**
 ```{r}
 #creating the graph of the gender of the subscribers 
 
 cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
 
-<<<<<<< HEAD
 
-=======
->>>>>>> d5a3f2bce5f81d50fbd257a0f56d17abdced94df
 gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
   geom_col(aes(fill = factor(gender))) + 
   labs(title = "The Total Number of Subscribers For Each Gender", 
@@ -110,6 +108,7 @@ gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subs
   scale_fill_manual(values = cols, 
                      limits = c("0", "1", "2"), 
                      labels = c("Unknown/Don't Specify with Either", "Male", "Female"))
+gender_s
 ```
 
 ```{r, results = 'hide'}
@@ -140,30 +139,33 @@ count_customers <- dbGetQuery(db,
 total_users <- count_subscribers %>% full_join(count_customers)
 ```
 
-**Compare the number of subscribers to customers during rush hour**
+**Compare the number of subscribers to customers as whole**
 
 ```{r fig.show = "hold", out.width = "50%"}
+
 #Plotting subscribers vs. customers
 
 subs_vs_cus <- ggplot(data = total_users, aes(x = birth_year, y = total_number_of_customers)) +
   geom_col() + 
-  geom_smooth(aes(color = "plum4")) + 
+  geom_line(aes(color = "plum4")) + 
   scale_color_manual(values = c("darkviolet")) + 
   labs(title = "The Total Number of Customers In Each Birth Year Overall", 
        x = "Birth Year", 
        y = "Number of Customers") + 
-  theme(legend.position = "none") + 
-  scale_y_continuous(breaks= c("0+e00", "2e+05", "4e+05", "6e+05"), 
-                   labels = c("0", "200000", "400000", "600000"))
+  theme(legend.position = "none") 
+
 
 subs_vs_cus2 <- ggplot(data = total_users, aes(x = birth_year, y = total_number_of_subscribers)) +
   geom_col() + 
-  geom_smooth(aes(color = "plum4")) + 
+  geom_line(aes(color = "plum4")) + 
   scale_color_manual(values = c("darkviolet")) + 
   labs(title = "The Total Number of Subscribers In Each Birth Year Overall", 
        x = "Birth Year", 
        y = "Number of Subscribers") + 
   theme(legend.position = "none")
+
+subs_vs_cus
+subs_vs_cus2
 ```
 
 ```{r, results = 'hide'}
