@@ -90,16 +90,12 @@ gender_subscribers <- dbGetQuery(db,
                       GROUP BY gender;") 
 ```
 
-
-
 ```{r}
 #creating the graph of the gender of the subscribers 
 
 cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
 
-
 cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
-
 
 gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
   geom_col(aes(fill = factor(gender))) + 
@@ -144,7 +140,7 @@ total_users <- count_subscribers %>% full_join(count_customers)
 
 **Compare the number of subscribers to customers during rush hour**
 
-```{r warning = FALSE, message = FALSE, fig.show = "hold", out.width = "50%"}
+```{r fig.show = "hold", out.width = "50%"}
 #Plotting subscribers vs. customers
 
 subs_vs_cus <- ggplot(data = total_users, aes(x = birth_year, y = total_number_of_customers)) +
@@ -158,7 +154,7 @@ subs_vs_cus <- ggplot(data = total_users, aes(x = birth_year, y = total_number_o
   scale_y_continuous(breaks= c("0+e00", "2e+05", "4e+05", "6e+05"), 
                    labels = c("0", "200000", "400000", "600000"))
 
-subs_vs_cus2 <-ggplot(data = total_users, aes(x = birth_year, y = total_number_of_subscribers)) +
+subs_vs_cus2 <- ggplot(data = total_users, aes(x = birth_year, y = total_number_of_subscribers)) +
   geom_col() + 
   geom_smooth(aes(color = "plum4")) + 
   scale_color_manual(values = c("darkviolet")) + 
@@ -166,14 +162,7 @@ subs_vs_cus2 <-ggplot(data = total_users, aes(x = birth_year, y = total_number_o
        x = "Birth Year", 
        y = "Number of Subscribers") + 
   theme(legend.position = "none")
-
-# left image
-subs_vs_cus
-# right image
-subs_vs_cus2
 ```
-
-
 
 ```{r, results = 'hide'}
 #SQL query to find top 5 stations by most subscribers (using indexes)
@@ -212,9 +201,11 @@ most_subscribers_gg <- dbGetQuery(db,
 most_subscribers_plot <- leaflet() %>%
   addTiles() %>%
   addMarkers(data = most_subscribers, lng = ~avg_lon, lat = ~avg_lat, popup = ~name)
+
+most_subscribers_plot
 ```
 
-```{r}
+```{r, message = FALSE}
 #Plotting number of subscribers per birth year
 
 most_subscribers_ggplot <- ggplot(most_subscribers_gg, aes(x = birth_year, y = total_number_of_subscribers)) +
@@ -224,4 +215,6 @@ most_subscribers_ggplot <- ggplot(most_subscribers_gg, aes(x = birth_year, y = t
        x = "Birth Year",
        y = "Total Number of Subscribers") +
   theme(legend.position = "none")
+
+most_subscribers_ggplot
 ```
