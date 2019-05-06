@@ -240,6 +240,7 @@ most_subscribers <- dbGetQuery(db,
                             LIMIT 5;")
 ```
 
+**Top 5 Stations Used By Subscribers**
 ```{r}
 #Making leaflet of top 5 stations by subscribers
 
