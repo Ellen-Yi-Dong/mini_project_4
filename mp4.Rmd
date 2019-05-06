@@ -25,69 +25,48 @@ knitr::opts_chunk$set(connection = db, max.print = 20)
 ```
 
 
-```{sql connection = db}
+```{r, echo = FALSE}
 #SQL Query to Join the Tables
 
-SELECT station_id, name, avg_lat, avg_lon
-FROM trips 
-LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
-WHERE start_time > "2017-01-01 06:00:00" AND stop_time < "2017-01-01 10:00:00"
-GROUP BY station_id
-ORDER BY start_time;
+dbGetQuery (db,
+            "SELECT station_id, name, avg_lat, avg_lon
+            FROM trips 
+            LEFT JOIN station_months ON trips.start_station_id = station_months.station_id
+            WHERE start_time > '2017-01-01 06:00:00' AND stop_time < '2017-01-01 10:00:00'
+            GROUP BY station_id
+            ORDER BY start_time;")
 ```
 
-```{sql connection = db}
+```{r, echo = FALSE}
 #SQL Query to Count Unique Bikes (uses bike_id key/index)
 
-SELECT COUNT(DISTINCT bike_id) AS number_of_bikes
-FROM trips 
+dbGetQuery (db,
+            "SELECT COUNT(DISTINCT bike_id) AS number_of_bikes
+            FROM trips;")
 ```
 
-```{sql connection = db}
-#SQL Query to find number of users that are young
+```{r, echo = FALSE}
+#SQL query to find young subscribers and moving it into R
 
-SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
-FROM trips 
-WHERE user_type = 'subscriber'
-AND birth_year > 1980
-GROUP BY birth_year
-ORDER BY birth_year DESC
-```
-
-```{sql connection = db}
-#SQL Query to find info on oldest subscribers
-
-SELECT user_type, gender, birth_year, COUNT(user_type) AS total_of_users_by_age, bike_id
-FROM trips 
-WHERE user_type = "subscriber" AND birth_year BETWEEN 1945 and 2001
-GROUP BY bike_id
-ORDER BY birth_year
-```
-  
-
-```{r}
-#Moving data on young users into R
-
-young_users <- dbGetQuery(db, 
+young_subscribers <- dbGetQuery(db, 
                     "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
-FROM trips 
-WHERE user_type = 'subscriber'
-AND birth_year > 1980
-GROUP BY birth_year
-ORDER BY birth_year DESC;
-")
+                    FROM trips 
+                    WHERE user_type = 'subscriber'
+                    AND birth_year > 1980
+                    GROUP BY birth_year
+                    ORDER BY birth_year DESC;")
 ```
 
 ```{r}
-#Plotting proportion of young users
+#Plotting proportion of young subscribers
 
-young_users_plot <- ggplot(young_users, aes(x = birth_year, y = number_of_users))
+young_subscribers_plot <- ggplot(young_subscribers, aes(x = birth_year, y = number_of_users))
 ```
 
-```{r}
-#Getting info on old users into R
+```{r, echo = FALSE}
+#SQL query to find old subscribers and moving it into R
 
-old_users <- dbGetQuery(db,
+old_subscribers <- dbGetQuery(db,
                      "SELECT user_type, COUNT(user_type) AS number_of_users, birth_year
                       FROM trips 
                       WHERE user_type = 'subscriber'
@@ -98,8 +77,9 @@ old_users <- dbGetQuery(db,
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 #creating table for determining the gender of the subscribers
+
 gender_subscribers <- dbGetQuery(db,
                      "SELECT user_type, COUNT(user_type) AS number_of_subscribers, gender
                       FROM trips 
@@ -116,6 +96,7 @@ gender_subscribers
 
 ```{r}
 #creating the graph of the gender of the subscribers 
+
 gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
   geom_col()
 
@@ -141,8 +122,8 @@ gender_s
 
 
 
-```{r}
-# figuring out top 5 stations by most subscribers (using indexes)
+```{r, echo = FALSE}
+#SQL query to find top 5 stations by most subscribers (using indexes)
 
 most_subscribers <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
@@ -157,8 +138,8 @@ most_subscribers <- dbGetQuery(db,
 most_subscribers
 ```
 
-```{r}
-#Getting top 5 stations by most subscribers into R (using indexes)
+```{r, echo = FALSE}
+#SQL query to get top 5 stations by most subscribers into R (using indexes)
 
 most_subscribers_gg <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers, start_station_id, station_months.name, start_time, trips.stop_time, station_id, avg_lat, avg_lon
@@ -173,7 +154,7 @@ most_subscribers_gg
 ```
 
 
-**Map of Top 5 Bike Stations with Most Subscriber Users**
+**Map of Top 5 Bike Stations with Most Subscribers**
 ```{r}
 #Making leaflet of top 5 stations by subscribers
 
