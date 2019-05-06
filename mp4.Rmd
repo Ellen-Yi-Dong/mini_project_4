@@ -96,6 +96,10 @@ gender_subscribers <- dbGetQuery(db,
 
 cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
 
+<<<<<<< HEAD
+=======
+cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
+>>>>>>> cb0438a8b0073f82bc263aed74c6846bfff7caf7
 
 gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
   geom_col(aes(fill = factor(gender))) + 
