@@ -111,9 +111,12 @@ gender_s
 
 ```
 
-#compare the number of subscribers to customers during rush hour 
 
-```{r}
+**compare the number of subscribers to customers during rush hour**
+
+```{r, echo = FALSE}
+#SQL query to count number of subscribers
+
 count_subscribers <- dbGetQuery(db, 
                           "SELECT birth_year, COUNT(user_type) AS total_number_of_subscribers    
                             FROM trips
@@ -123,7 +126,9 @@ AND birth_year >=1945
 count_subscribers
 ```
 
-```{r}
+```{r, echo = FALSE}
+#SQL query to count number of customers
+
 count_customers <- dbGetQuery(db,
                             "SELECT birth_year, COUNT(user_type) AS total_number_of_customers
                             FROM trips
@@ -134,13 +139,16 @@ count_customers
 
 ```
 
-```{r}
+```{r, echo = FALSE}
+#Joining the tables that count subscribers and customers
+
 total_users <- count_subscribers %>% full_join(count_customers)
 total_users
 ```
 
-
 ```{r warning = FALSE, message = FALSE, fig.show = "hold", out.width = "50%"}
+#Plotting subscribers vs. customers
+
 subs_vs_cus<-ggplot(data = total_users, aes(x = birth_year, y = total_number_of_customers)) +
   geom_col()
 
