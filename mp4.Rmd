@@ -98,11 +98,7 @@ gender_subscribers
 
 ```{r}
 #creating the graph of the gender of the subscribers 
-<<<<<<< HEAD
 cols <- c("0" = "gray", "1" = "deepskyblue2", "2" = "deeppink2")
-=======
-
->>>>>>> c1cccaf31f40e06713e7ad80d51df23381af5944
 gender_s <- ggplot(data = gender_subscribers, aes(x = gender, y = number_of_subscribers)) + 
   geom_col(aes(fill = factor(gender))) + 
   labs(title = "The Total Number of Subscribers For Each Gender", 
