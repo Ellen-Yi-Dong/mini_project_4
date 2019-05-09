@@ -158,6 +158,8 @@ subs_vs_cus2 <- ggplot(data = total_users, aes(x = birth_year, y = total_number_
        y = "Number of Subscribers") + 
   theme(legend.position = "none")
 
+options(scipen = 99999)
+
 subs_vs_cus
 subs_vs_cus2
 ```
@@ -225,6 +227,7 @@ gender_s
 Therefore, it appears that Citi Bike is not gender inclusive. A further reason why it may not be a viable alternative is because it appears to not be socioeconomically inclusive, either. Our third point of analysis was to examine the 5 most popular start stations among NYC Citi Bike subscribers during rush hour. Where subscribers start their trips during rush hour can be taken as an indicator of which neighborhoods/areas Citi Bike subscribers are from. 
 
 The top 5 stations are Concord Street & Bridge Street, 9th Avenue & West 22nd Street, Clark Street & Henry Street, West 47th Street & 10th Avenue, and Bushwick Avenue & Powers Street. These are all relatively wealthy areas in NYC. With an annual membership of [$169](https://www.citibikenyc.com/pricing) a year, this suggests that Citi Bikes are not financially inclusive. Furthermore, most stations are strongly clustered away from less wealthy areas, such as the Bronx. 
+
 ```{r, results = 'hide'}
 #SQL query to find top 5 stations by most subscribers (using indexes)
 
