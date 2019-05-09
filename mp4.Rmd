@@ -31,7 +31,7 @@ knitr::opts_chunk$set(connection = db, max.print = 20)
 
 GitHub Repository[^1]
 
-![Citi Bikes in NYC](https://www1.nyc.gov/assets/home/images/press_release/2018/November/pr576-18.jpg)
+![Citi Bikes in NYC] (https://www1.nyc.gov/assets/home/images/press_release/2018/November/pr576-18.jpg)
 
 ```{r, results = 'hide'}
 #SQL Query to Join the Tables
